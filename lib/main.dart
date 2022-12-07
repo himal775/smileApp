@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:smile_app/LoginPage.dart';
+import 'package:smile_app/view/clock.dart';
 import 'package:smile_app/view/firstScreen.dart';
 
 import 'package:smile_app/view/secondScreen.dart';

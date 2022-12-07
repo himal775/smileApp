@@ -5,12 +5,13 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
+import 'package:smile_app/view/clock.dart';
 import 'package:smile_app/view/firstScreen.dart';
 import 'package:smile_app/provider/crud.dart';
 import 'package:smile_app/service/fetchQuestion.dart';
 import 'package:smile_app/view/thirdScreen.dart';
 
-//screent to play quiz 
+//screent to play quiz
 class SecondScreen extends StatefulWidget {
   @override
   State<SecondScreen> createState() => _SecondScreenState();
@@ -31,33 +32,14 @@ class _SecondScreenState extends State<SecondScreen> {
   var time = 30;
   Timer? hey;
 
-  void initState() {
-    super.initState();
-    void start() {
-      Timer.periodic(Duration(seconds: 1), (timer) {
-        setState(() {
-          if (time <= 0) {
-            dispose();
-          } else {
-            time--;
-          }
-        });
-      });
-    }
-  }
-
-  void dispose() {
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.red[400],
         title: Text(
-          "Question $num/10",
-          style: TextStyle(color: Colors.white),
+          "Quiz Main Page",
+          style: const TextStyle(color: Colors.white),
         ),
         elevation: 0,
         centerTitle: true,
@@ -65,7 +47,7 @@ class _SecondScreenState extends State<SecondScreen> {
       body: Consumer(
         builder: ((context, ref, child) {
           var question = ref.watch(quiz);
-          var core = ref.watch(quizScore);
+          final currentTime = ref.watch(clockProvider);
 
           return question.value != null
               ? Container(
@@ -79,7 +61,7 @@ class _SecondScreenState extends State<SecondScreen> {
                             flex: flex,
                             child: Container(
                               height: 10,
-                              color: Colors.green,
+                              color: Colors.grey,
                             ),
                           ),
                           Flexible(
@@ -95,15 +77,13 @@ class _SecondScreenState extends State<SecondScreen> {
                       ),
                       CircleAvatar(
                         radius: 60,
-                        child: ClipOval(
-                            child: Image.network(
-                                "https://i.pinimg.com/736x/31/6d/86/316d8698b5c9abb78778d411a5d39544.jpg")),
+                        child: ClipOval(child: Text("$currentTime")),
                       ),
                       SizedBox(
                         height: 10,
                       ),
                       Text(
-                        "Solve the Equation. And pick correct answer?",
+                        "$num. Solve the given equation and pick right answer",
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 18),
                       ),
@@ -111,18 +91,6 @@ class _SecondScreenState extends State<SecondScreen> {
                         height: 20,
                       ),
 
-                      // SizedBox(
-                      //   height: 10,
-                      // ),
-                      // Text(
-                      //   "Question 1",
-                      //   style: TextStyle(
-                      //       fontWeight: FontWeight.bold, fontSize: 21),
-                      // ),
-                      // SizedBox(
-                      //   height: 10,
-                      // ),
-                      Text("$time"),
                       Container(
                         height: 200,
                         width: 550,
@@ -133,10 +101,6 @@ class _SecondScreenState extends State<SecondScreen> {
                             spreadRadius: 1,
                           )
                         ]),
-
-                        // decoration: BoxDecoration(boxShadow: [
-                        //   BoxShadow(color: Colors.grey, spreadRadius: 2)
-                        // ]),
                         child: Image.network("${question.value![ques]}"),
                       ),
                       SizedBox(
@@ -360,8 +324,12 @@ class _SecondScreenState extends State<SecondScreen> {
                           )),
                         ),
                         onTap: () {
+                          // ques < 18
+                          //     ? null
+                          //     : ref.read(clockProvider.notifier).dispose();
                           valueB ? (score = score + 10) : (score = score - 10);
                           ref.read(quizScore).updateScore(score: score);
+
                           ques < 18
                               ? setState(() {
                                   num++;
@@ -374,11 +342,10 @@ class _SecondScreenState extends State<SecondScreen> {
                                   valueC = false;
                                   valueD = false;
 
-                                  // Navigator.of(context).push(MaterialPageRoute(
-                                  //     builder: (BuildContext context) =>
-                                  //         SecondScreen()));
+                                  ref.read(clockProvider.notifier).restart();
                                 })
-                              : Get.to(() => MyWidget(
+                              : //ref.read(clockProvider.notifier).dispose();
+                              Get.to(() => MyWidget(
                                     score: score,
                                   ));
                         },

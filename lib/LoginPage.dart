@@ -7,8 +7,7 @@ import 'package:smile_app/provider/authStream.dart';
 import 'package:smile_app/provider/loginProvider.dart';
 import 'package:smile_app/signup.dart';
 
-
-//login page for authentication 
+//login page for authentication
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
@@ -148,7 +147,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                     onTap: () async {
-                      // Get.to(() => FirstScreen());
+                      //Get.to(() => FirstScreen());
                       _form.currentState!.save();
                       if (_form.currentState!.validate()) {
                         final response = await ref.read(authprovider).login(
