@@ -3,7 +3,9 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smile_app/model/quizModel.dart';
+
 //fetching data from api and adding it to the list.
+
 final quiz = FutureProvider<List>((ref) async {
   List<dynamic> list = [];
   for (int i = 0; i <= 10; i++) {

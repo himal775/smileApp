@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:smile_app/LoginPage.dart';
 import 'package:smile_app/provider/auth.dart';
+
 //signup page for registering user.
 class SignUP extends StatefulWidget {
   const SignUP({super.key});
@@ -17,6 +18,7 @@ class _LoginPageState extends State<SignUP> {
   final firstnamecontroller = TextEditingController();
   final emailcontroller = TextEditingController();
   int score = 0;
+  int timetaken = 0;
 
   final passcontroller = TextEditingController();
   final _form = GlobalKey<FormState>();
@@ -168,7 +170,8 @@ class _LoginPageState extends State<SignUP> {
                           firstnamecontroller.text.trim(),
                           emailcontroller.text.trim(),
                           passcontroller.text.trim(),
-                          score);
+                          score,
+                          timetaken);
                       // if (response != "Successfully") {
                       //   Get.defaultDialog(middleText: "Somthing Went Wrong");
                       // } else {

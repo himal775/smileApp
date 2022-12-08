@@ -12,8 +12,8 @@ final authprovider = Provider(((ref) => Auth()));
 class Auth {
   //future function for signup
 
-  Future<String> signup(
-      String firstName, String email, String password, int score) async {
+  Future<String> signup(String firstName, String email, String password,
+      int score, int timetaken) async {
     try {
       final response = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
@@ -21,8 +21,13 @@ class Auth {
       final userdata =
           FirebaseFirestore.instance.collection("userDetails").doc(uid);
 
-      userdata.set(
-          {'FirstName': firstName, 'email': email, 'uid': uid, 'Score': score});
+      userdata.set({
+        'FirstName': firstName,
+        'email': email,
+        'uid': uid,
+        'Score': score,
+        'TimeTaken': timetaken
+      });
 
       return "Successfully";
     } on FirebaseAuthException catch (error) {

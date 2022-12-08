@@ -9,9 +9,9 @@ import 'package:smile_app/view/clock.dart';
 import 'package:smile_app/view/firstScreen.dart';
 import 'package:smile_app/provider/crud.dart';
 import 'package:smile_app/service/fetchQuestion.dart';
-import 'package:smile_app/view/thirdScreen.dart';
+import 'package:smile_app/view/resultScreen.dart';
 
-//screent to play quiz
+//screen to play quiz
 class SecondScreen extends StatefulWidget {
   @override
   State<SecondScreen> createState() => _SecondScreenState();
@@ -37,7 +37,7 @@ class _SecondScreenState extends State<SecondScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.red[400],
-        title: Text(
+        title: const Text(
           "Quiz Main Page",
           style: const TextStyle(color: Colors.white),
         ),
@@ -48,6 +48,9 @@ class _SecondScreenState extends State<SecondScreen> {
         builder: ((context, ref, child) {
           var question = ref.watch(quiz);
           final currentTime = ref.watch(clockProvider);
+          question.value != null
+              ? ref.read(clockProvider.notifier).timer
+              : null;
 
           return question.value != null
               ? Container(
@@ -72,38 +75,39 @@ class _SecondScreenState extends State<SecondScreen> {
                               )),
                         ],
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       CircleAvatar(
                         radius: 60,
                         child: ClipOval(child: Text("$currentTime")),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       Text(
                         "$num. Solve the given equation and pick right answer",
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 18),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
 
                       Container(
                         height: 200,
                         width: 550,
-                        decoration:
-                            BoxDecoration(color: Colors.white, boxShadow: [
-                          BoxShadow(
-                            blurRadius: 1,
-                            spreadRadius: 1,
-                          )
-                        ]),
+                        decoration: const BoxDecoration(
+                            color: Colors.white,
+                            boxShadow: [
+                              BoxShadow(
+                                blurRadius: 1,
+                                spreadRadius: 1,
+                              )
+                            ]),
                         child: Image.network("${question.value![ques]}"),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
 
@@ -117,7 +121,7 @@ class _SecondScreenState extends State<SecondScreen> {
                               decoration: BoxDecoration(
                                   color: valueA ? Colors.green : Colors.white,
                                   borderRadius: BorderRadius.circular(20),
-                                  boxShadow: [
+                                  boxShadow: const [
                                     BoxShadow(
                                         blurRadius: 1,
                                         spreadRadius: 1,
@@ -245,14 +249,6 @@ class _SecondScreenState extends State<SecondScreen> {
                                 valueB = false;
                                 valueD = false;
                               });
-
-                              // Navigator.pushAndRemoveUntil(
-                              //   context,
-                              //   MaterialPageRoute(
-                              //       builder: (context) =>
-                              //           MyWidget()), // this mainpage is your page to refresh
-                              //   (Route<dynamic> route) => false,
-                              // );
                             }),
                           ),
                           InkWell(
@@ -262,12 +258,6 @@ class _SecondScreenState extends State<SecondScreen> {
                               decoration: BoxDecoration(
                                 color: valueD ? Colors.green : Colors.white,
                                 borderRadius: BorderRadius.circular(20),
-                                // boxShadow: [
-                                //   BoxShadow(
-                                //       blurRadius: 1,
-                                //       spreadRadius: 1,
-                                //       color: Colors.black)
-                                //]
                               ),
                               child: Row(
                                   mainAxisAlignment:
@@ -315,7 +305,7 @@ class _SecondScreenState extends State<SecondScreen> {
                             color: Colors.red[400],
                             borderRadius: BorderRadius.circular(20),
                           ),
-                          child: Center(
+                          child: const Center(
                               child: Text(
                             "Next",
                             style: TextStyle(
@@ -324,12 +314,14 @@ class _SecondScreenState extends State<SecondScreen> {
                           )),
                         ),
                         onTap: () {
-                          // ques < 18
-                          //     ? null
-                          //     : ref.read(clockProvider.notifier).dispose();
                           valueB ? (score = score + 10) : (score = score - 10);
-                          ref.read(quizScore).updateScore(score: score);
-
+                          ref.read(quizScore).updateScore(
+                              score: score, timetaken: currentTime);
+                          ques == 18
+                              ? setState(() {
+                                  ref.read(clockProvider.notifier).dispose();
+                                })
+                              : null;
                           ques < 18
                               ? setState(() {
                                   num++;
@@ -341,12 +333,10 @@ class _SecondScreenState extends State<SecondScreen> {
                                   valueB = false;
                                   valueC = false;
                                   valueD = false;
-
-                                  ref.read(clockProvider.notifier).restart();
                                 })
-                              : //ref.read(clockProvider.notifier).dispose();
-                              Get.to(() => MyWidget(
+                              : Get.to(() => MyWidget(
                                     score: score,
+                                    timetaken: currentTime,
                                   ));
                         },
                       )

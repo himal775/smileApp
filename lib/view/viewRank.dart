@@ -5,7 +5,6 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:smile_app/provider/crud.dart';
 
-
 //view rank in  screen
 class ViewRank extends StatelessWidget {
   ViewRank({super.key});
@@ -15,13 +14,16 @@ class ViewRank extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(),
+        appBar: AppBar(
+          backgroundColor: Colors.red[400],
+          title: const Text("View Rank"),
+        ),
         body: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(8.0),
           child: Container(
             height: double.infinity,
             width: double.infinity,
-            decoration: BoxDecoration(color: Colors.white, boxShadow: [
+            decoration: const BoxDecoration(color: Colors.white, boxShadow: [
               BoxShadow(blurRadius: 1, spreadRadius: 1, color: Colors.grey)
             ]),
             child: StreamBuilder<QuerySnapshot>(
@@ -41,16 +43,18 @@ class ViewRank extends StatelessWidget {
                               document.data()! as Map<String, dynamic>;
 
                           return ListTile(
-                            leading: Icon(Icons.people),
                             title: Text(
                               data['FirstName'],
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.grey),
+                                  color: Colors.black54),
+                            ),
+                            subtitle: Text(
+                              "${data['TimeTaken']} seconds",
                             ),
                             trailing: Text(
-                              "${data['Score']}",
-                              style: TextStyle(fontSize: 20),
+                              "${data['Score']} points",
+                              style: const TextStyle(fontSize: 16),
                             ),
                           );
                         })

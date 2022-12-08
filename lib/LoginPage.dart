@@ -8,6 +8,7 @@ import 'package:smile_app/provider/loginProvider.dart';
 import 'package:smile_app/signup.dart';
 
 //login page for authentication
+
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
@@ -40,7 +41,7 @@ class _LoginPageState extends State<LoginPage> {
                           height: 150,
                           decoration: BoxDecoration(
                               color: Colors.red[400],
-                              borderRadius: BorderRadius.only(
+                              borderRadius: const BorderRadius.only(
                                   bottomLeft: Radius.circular(30),
                                   bottomRight: Radius.circular(30)))),
                       Center(
@@ -56,12 +57,12 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
+                    children: const [
                       Text(
                         "LOGIN",
                         style: TextStyle(
@@ -107,20 +108,20 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   Row(
                     children: [
-                      SizedBox(width: 20),
+                      const SizedBox(width: 20),
                       Checkbox(
                         value: islogin,
                         onChanged: (value) {
                           ref.read(loginprovider.notifier).loginstate();
                         },
                       ),
-                      Text("Keep me login"),
-                      SizedBox(
+                      const Text("Keep me login"),
+                      const SizedBox(
                         width: 100,
                       ),
                       TextButton(
                           onPressed: () {},
-                          child: Text(
+                          child: const Text(
                             "Forgot Password?",
                             style: TextStyle(color: Colors.blue),
                           ))
@@ -160,7 +161,7 @@ class _LoginPageState extends State<LoginPage> {
                               title: "Error! ",
                               middleText: "Invalid Username/Password ");
                         } else {
-                          Get.to(() => FirstScreen());
+                          Get.to(() => const FirstScreen());
                         }
                       } else {
                         return Get.defaultDialog(title: "Validation Error");
@@ -171,10 +172,10 @@ class _LoginPageState extends State<LoginPage> {
                       onPressed: () {
                         Navigator.of(context).push(
                             MaterialPageRoute(builder: (BuildContext context) {
-                          return SignUP();
+                          return const SignUP();
                         }));
                       },
-                      child: Text("Create Account"))
+                      child: const Text("Create Account"))
                 ],
               )),
         );

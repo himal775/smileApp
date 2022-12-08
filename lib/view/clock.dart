@@ -7,18 +7,17 @@ import 'package:intl/intl.dart';
 class Clock extends StateNotifier<int> {
   // 1. initialize with current time
 
-  Clock() : super(30) {
+  Clock() : super(106) {
     // 2. create a timer that fires every second
 
     timer = Timer.periodic(Duration(seconds: 1), (_) {
       // 3. update the state with the current time
-
-      state = state - 1;
+      if (state >= 1) {
+        state = state - 1;
+      } else {
+        dispose();
+      }
     });
-  }
-  Timer restart() {
-    timer.cancel();
-    return timer;
   }
 
   late final Timer timer;
